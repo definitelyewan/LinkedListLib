@@ -1,0 +1,8 @@
+main
+*.o
+*.so
+*.a
+*.exe
+output.txt
+build/
+StructListDemo.c
