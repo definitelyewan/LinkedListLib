@@ -47,13 +47,16 @@ void *listGetFromBack(List *list);
 void *listDeleteData(List *list, void *toBeDeleted);
 
 //util
-char *toString(List *list);
-size_t getLength(List *list);
-void *findElement(List *list, bool (*customCompare)(const void *first,const void *second), const void *searchRecord);
+char *listToString(List *list);
+List *listDeepCopy(List *listToCopy);
+int listIsEmpty(List *list);
+size_t listLength(List *list);
+void *listFindElement(List *list, int (*customCompare)(const void *first,const void *second), const void *searchRecord);
 
 //iter
-ListIter createIterator(List *list);
-void *nextElement(ListIter *iter);
+ListIter listCreateIterator(List *list);
+int listIteratorHasNext(ListIter iter);
+void *listIteratorNext(ListIter *iter);
 
 #ifdef __cplusplus
 } //extern c end

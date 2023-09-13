@@ -239,19 +239,21 @@ void *listDeleteData(List *list, void *toBeDeleted){
 	return NULL;
 }
 
-char* toString(List *list){
-	ListIter iter = createIterator(list);
-	char* str;
+char *listToString(List *list){
+	
+	assert_return_val(list != NULL, NULL);
+	
+	ListIter iter = listCreateIterator(list);
+	char *str = NULL;
 		
-	str = (char*)malloc(sizeof(char));
+	str = (char *)malloc(sizeof(char));
 	strcpy(str, "");
 	
-	void* elem;
-	while((elem = nextElement(&iter)) != NULL){
-		char* currDescr = list->printData(elem);
+	void *elem = NULL;
+	while((elem = listIteratorNext(&iter)) != NULL){
+		char *currDescr = list->printData(elem);
 		int newLen = strlen(str)+50+strlen(currDescr);
-		str = (char*)realloc(str, newLen);
-		//strcat(str, "\n");
+		str = (char *)realloc(str, newLen);
 		strcat(str, currDescr);
 		
 		free(currDescr);
@@ -260,38 +262,80 @@ char* toString(List *list){
 	return str;
 }
 
-size_t getLength(List *list){
-	return list->length;
+List *listDeepCopy(List *listToCopy){
+
+	assert_return_val(listToCopy != NULL, NULL);
+
+	List *l = listCreate(listToCopy->printData, listToCopy->deleteData, listToCopy->compareData, listToCopy->copyData);
+	l->length = listToCopy->length;
+
+	ListIter iter = listCreateIterator(listToCopy);
+
+	void *elem = NULL;
+	while((elem = listIteratorNext(&iter)) != NULL){
+		listInsertBack(l, listToCopy->copyData(elem));
+	}
+
+	return l;
 }
 
-void *findElement(List *list, bool (*customCompare)(const void *first,const void *second), const void *searchRecord){
-	if(list == NULL || customCompare == NULL || searchRecord == NULL)
-		return NULL;
+int listIsEmpty(List *list){
+	assert_return_val(list != NULL, 1);
+	return (list->head == NULL) ? 1 : 0;
+}
 
-	ListIter itr = createIterator(list);
+size_t listLength(List *list){
+	assert_return_val(list != NULL, 0);
+	return (list->head == NULL) ? 0 : list->length;
+}
 
-	void *data = nextElement(&itr);
+void *listFindElement(List *list, int (*customCompare)(const void *first,const void *second), const void *searchRecord){
+	assert_return_val(list != NULL, NULL);
+	assert_return_val(searchRecord != NULL, NULL);
+
+	ListIter itr = listCreateIterator(list);
+
+	void *data = listIteratorNext(&itr);
 	while(data != NULL){
-		if(customCompare(data, searchRecord)){
-			return data;
+		
+		//use default function?
+		if(customCompare == NULL){
+			if(list->compareData(data, searchRecord) == 0){
+				return data;
+			}
+		}else{
+			if(customCompare(data, searchRecord) == 0){
+				return data;
+			}
 		}
 
-		data = nextElement(&itr);
+		data = listIteratorNext(&itr);
 	}
 
 	return NULL;
 }
 
-ListIter createIterator(List *list){
-    ListIter iter;
+ListIter listCreateIterator(List *list){
+    
+	ListIter iter;
 
-    iter.current = list->head;
+    iter.current = (list == NULL) ? NULL : list->head;
     
     return iter;
 }
 
-void *nextElement(ListIter *iter){
-    Node *tmp = iter->current;
+int listIteratorHasNext(ListIter iter){
+	if(iter.current == NULL){
+		return 0;
+	}
+
+	return (iter.current->next == NULL) ? 0 : 1;
+}
+
+void *listIteratorNext(ListIter *iter){
+    assert_return_val(iter != NULL, NULL);
+	
+	Node *tmp = iter->current;
     
     if (tmp != NULL){
         iter->current = iter->current->next;
