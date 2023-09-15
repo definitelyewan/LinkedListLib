@@ -1,0 +1,236 @@
+/**
+
+@mainpage
+
+LinkedListLib is a library containing a doubly linked list data structure and list iterator data structure. The library can be compiled using gcc, clang, or MSVC and is coded using the c99 standard.
+
+The official repo for this library is located at https://github.com/definitelyewan/LinkedListLib
+
+@section main-features Features
+
+LinkedListLib provides an easy way to interact with and create a linked list data structure. The caller
+can also create a list iterator to avoid interacting with the linked list structure itself and for ease of
+use. The structure itself is completely user-programmable and provides functionality for transforming a 
+list into a string, performing a deep copy, deleting data, comparing data, and printing data to a console.
+
+The ByteStream library provides:
+
+ - Adding and removing data from a linked list
+ - User programmable compare, free, print, copy and string functionality
+ - List iterators
+ - Different insert functions
+ - Searchable list
+ - 100% test coverage
+ - License: MIT
+
+@section main-test Some Examples
+
+Using this library for both linked lists and iterators is simple. see the example below for details.
+
+@code
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <LinkedList.h>
+
+typedef struct _Name{
+	char *firstName;
+	char *lastName;
+	unsigned int age;
+}Name;
+
+Name *nameCreate(unsigned int age, char *name, char *last){
+    
+    Name *tmp = (Name *)malloc(sizeof(Name));
+
+    tmp->firstName = calloc(sizeof(char), strlen(name) + 1);
+    tmp->lastName = calloc(sizeof(char), strlen(last) + 1);
+
+    strcpy(tmp->firstName, name);
+    strcpy(tmp->lastName, last);
+    tmp->age = age;
+    
+    return tmp;
+}
+
+char *printFunc(const void *toBePrinted){
+	
+	char *tmpStr;
+	Name *tmpName;
+	int len;
+	
+	if(toBePrinted == NULL){
+		return NULL;
+	}
+	
+	tmpName = (Name *)toBePrinted;
+
+	len = strlen(tmpName->firstName) + strlen(tmpName->lastName) + 29;
+	tmpStr = (char *)malloc(sizeof(char) * len);
+	
+	sprintf(tmpStr, "%s %s Age: %d\n", tmpName->firstName, tmpName->lastName, tmpName->age);
+	
+	return tmpStr;
+}
+
+int compareFunc(const void *first, const void *second){
+	
+	Name *tmpName1;
+	Name *tmpName2;
+	
+	if(first == NULL || second == NULL){
+		return 0;
+	}
+	
+	tmpName1 = (Name *)first;
+	tmpName2 = (Name *)second;
+	
+	return strcmp((char *)tmpName1->lastName, (char *)tmpName2->lastName);
+}
+
+void deleteFunc(void *toBeDeleted){
+	
+	Name *tmpName;
+	
+	if(toBeDeleted == NULL){
+		return;
+	}
+	
+	tmpName = (Name *)toBeDeleted;
+	
+	free(tmpName->firstName);
+	free(tmpName->lastName);
+	free(tmpName);
+	
+}
+
+void *copyFunc(const void *toBeCopied){
+
+    Name *tmpName;
+    Name *newName = NULL;
+    char *firstName = NULL;
+    char *lastName = NULL;
+
+    if(toBeCopied == NULL){
+        return newName;
+    }
+
+    tmpName = (Name *)toBeCopied;
+
+    newName = (Name *)malloc(sizeof(Name));
+
+    newName->age = tmpName->age;
+    newName->firstName = (char *)calloc(sizeof(char), strlen(tmpName->firstName) + 1);
+    newName->lastName = (char *)calloc(sizeof(char), strlen(tmpName->lastName) + 1);
+
+    strcpy(newName->firstName, tmpName->firstName);
+    strcpy(newName->lastName, tmpName->lastName);
+
+    return newName;
+}
+
+
+int main(void){
+
+    Name *pac = nameCreate(25, "Tupac", "Shakur");
+    Name *biggie = nameCreate(24, "Christopher", "Wallace");
+    Name *lorde = nameCreate(26, "Ella", "Yelich-O'Connor");
+    Name *alvvays = nameCreate(36, "Molly", "Rankin");
+    Name *ari = nameCreate(30, "Ariana", "Grande");
+    Name *get = NULL;
+    List *l = NULL;
+    List *l2 = NULL;
+    ListIter li;
+    void *element = NULL;
+
+    /* Make an empty linked list */
+    l = listCreate(printFunc, deleteFunc, compareFunc, copyFunc);
+    
+
+    /* Insert an artist at the back of the list */
+    listInsertBack(l, pac);
+    listInsertBack(l, alvvays);
+
+    /* Insert an artist at the front of the list */
+    listInsertFront(l, biggie);
+    listInsertFront(l, lorde);
+
+    /* Insert an artist in a sorted position */
+    listInsertSorted(l, ari);
+
+    /* Is the list empty? */
+    printf("Is the list empty? %s\n", (listIsEmpty(l) == 1) ? "yes" : "no");
+
+    /* How big is the list? */
+    printf("The list has %d nodes\n", listLength(l));
+
+
+    /* Get the last node*/
+    get = listGetFromBack(l);
+    printf("The artist at the back is %s\n", get->firstName);
+
+    /* Get the first node*/
+    get = listGetFromFront(l);
+    printf("The artist at the front is %s\n", get->firstName);
+
+    /* Make a deep copy of the list */
+    l2 = listDeepCopy(l);
+
+    /* Remove a node from the list */
+    get = listDeleteData(l, biggie);
+    free(get->firstName);
+    free(get->lastName);
+    free(get);
+
+
+    /* Search for an artist in both lists */
+    Name search = {"Christopher", "Wallace", 24};
+    
+    printf("was biggie in the first list? %s\n", (listFindElement(l, compareFunc, &search) == NULL) ? "no" : "yes");
+    printf("was biggie in the second list? %s\n", (listFindElement(l2, compareFunc, &search) == NULL) ? "no" : "yes");
+
+    /* Print the list content */
+    char *str = listToString(l);
+    printf("\nList 1:\n%s\n",str);
+    free(str);
+
+    printf("List 2:\n");
+
+    /* Create a list iterator */
+    li = listCreateIterator(l2);
+
+    /*Iterate through the list */
+    while((element = listIteratorNext(&li)) != NULL){
+        printf("%s %s %d\n", ((Name *)element)->firstName, ((Name *)element)->lastName, ((Name *)element)->age);
+    }
+
+
+    /* Free the list */
+    listFree(l);
+    listFree(l2);
+}
+@endcode
+
+@section main-install Building, Benchmarking, Testing, and Installation
+The LinkedList repo comes with multiple Python3 scripts aimed at ease of use for verifying tests as well as installation and building. All of these scripts are located in the scripts folder found with your copy of LinkedListLib, but please note these scripts must be run from the root directory of your copy.
+
+Tests can be run on any operating system with support for the cmocka library.
+@code 
+python scripts/test.py
+@endcode
+
+This library can be built using the build script within the scripts directory and by default creates a shared library as either a .so or .dll.
+@code 
+python scripts/build.py
+@endcode
+
+This library be installed using the install script provided with this copy however, at the moment the script only has full support for Linux and Windows. This script can be used on other operating systems but the compiled library will be located in build/ or build/Release. From this point on you are on your own and it is up to you to figure out where it should go.
+@code 
+python scripts/install.py
+@endcode
+
+The documentation can be built with the docs script located in the script's directory.
+@code 
+python scripts/docs.py
+@endcode
+*/
