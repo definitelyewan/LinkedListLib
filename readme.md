@@ -3,8 +3,6 @@ LinkedListLib is a library containing a doubly linked list data structure and li
 
 The official repo for this library is located at https://github.com/definitelyewan/LinkedListLib
 
-@section main-features Features
-
 LinkedListLib provides an easy way to interact with and create a linked list data structure. The caller
 can also create a list iterator to avoid interacting with the linked list structure itself and for ease of
 use. The structure itself is completely user-programmable and provides functionality for transforming a 
