@@ -60,7 +60,7 @@ try:
     if platform == "linux" or platform == "linux2" or platform == "darwin":
         subprocess.call("make")
     elif platform == "win32":
-        subprocess.call(["MSBuild.exe","/p:DebugType=None","/p:Configuration=Release","LinkedListTests.vcxproj"])
+        subprocess.call(["MSBuild.exe","/p:DebugType=None","/p:Configuration=Release","LinkedList_test.vcxproj"])
 except OSError as e:
     if e.errno == errno.ENOENT:
         #program was not found

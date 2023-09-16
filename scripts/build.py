@@ -41,7 +41,7 @@ try:
     if platform == "linux" or platform == "linux2" or platform == "darwin":
         subprocess.call("make")
     elif platform == "win32":
-        subprocess.call(["MSBuild.exe","ByteStream.vcxproj"])
+        subprocess.call(["MSBuild.exe","LinkedList.vcxproj"])
 
 except OSError as e:
     if e.errno == errno.ENOENT:

@@ -22,24 +22,37 @@
  * @brief Assert the validity of an extression and return instead of abort().
  * @param expr
  */
+#ifdef _MSC_VER
+#define assert_return(expr) \
+if(!(expr)){ \
+    fprintf(stderr, "file %s: line %d (%s): precondition `%s' failed.", __FILE__, __LINE__, __FUNCSIG__ , #expr); \
+    return; \
+};
+#else
 #define assert_return(expr) \
 if(!(expr)){ \
     fprintf(stderr, "file %s: line %d (%s): precondition `%s' failed.", __FILE__, __LINE__, __PRETTY_FUNCTION__, #expr); \
     return; \
 };
-
+#endif
 /**
  * @brief Assert the validity of an extression and return a user defined value instead of abort().
  * @param expr
  * @param val
  */
+#ifdef _MSC_VER
+#define assert_return_val(expr, val) \
+if(!(expr)){ \
+	fprintf(stderr, "file %s: line %d (%s): precondition `%s' failed.", __FILE__, __LINE__, __FUNCSIG__, #expr); \
+    return val; \
+ };
+#else
 #define assert_return_val(expr, val) \
 if(!(expr)){ \
 	fprintf(stderr, "file %s: line %d (%s): precondition `%s' failed.", __FILE__, __LINE__, __PRETTY_FUNCTION__, #expr); \
     return val; \
  };
-
-
+#endif
 /**
  * @brief Creates a list and returns it to the caller.
  * @details This function will fail and return null if no function pointers are provided.

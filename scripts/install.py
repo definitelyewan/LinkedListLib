@@ -53,7 +53,7 @@ try:
     if platform == "linux" or platform == "linux2" or platform == "darwin":
         subprocess.call(["make","install"])
     elif platform == "win32":
-        subprocess.call(["MSBuild.exe","/p:DebugType=None","/p:Configuration=Release","ByteStream.vcxproj"])
+        subprocess.call(["MSBuild.exe","/p:DebugType=None","/p:Configuration=Release","LinkedList.vcxproj"])
         subprocess.call("cpack")
         subprocess.call("LinkList-1.0.0-win64.exe")
 
