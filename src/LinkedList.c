@@ -259,7 +259,8 @@ void *listGetFromFront(List *list){
  * @return void* 
  */
 void *listGetFromBack(List *list){
-	if (list->tail == NULL){
+	
+	if(list->tail == NULL){
 		return NULL;
 	}
 	
@@ -273,6 +274,7 @@ void *listGetFromBack(List *list){
  * @return void* 
  */
 void *listDeleteData(List *list, void *toBeDeleted){
+	
 	assert_return_val(list != NULL, NULL);
 	assert_return_val(toBeDeleted != NULL, NULL);
 	
@@ -368,6 +370,7 @@ List *listDeepCopy(List *listToCopy){
  * @return int 
  */
 int listIsEmpty(List *list){
+	
 	assert_return_val(list != NULL, 1);
 	return (list->head == NULL) ? 1 : 0;
 }
@@ -378,6 +381,7 @@ int listIsEmpty(List *list){
  * @return size_t 
  */
 size_t listLength(List *list){
+	
 	assert_return_val(list != NULL, 0);
 	return (list->head == NULL) ? 0 : list->length;
 }
@@ -390,6 +394,7 @@ size_t listLength(List *list){
  * @return void* 
  */
 void *listFindElement(List *list, int (*customCompare)(const void *first,const void *second), const void *searchRecord){
+	
 	assert_return_val(list != NULL, NULL);
 	assert_return_val(searchRecord != NULL, NULL);
 
@@ -435,6 +440,7 @@ ListIter listCreateIterator(List *list){
  * @return int 
  */
 int listIteratorHasNext(ListIter iter){
+	
 	if(iter.current == NULL){
 		return 0;
 	}
@@ -448,7 +454,8 @@ int listIteratorHasNext(ListIter iter){
  * @return void* 
  */
 void *listIteratorNext(ListIter *iter){
-    assert_return_val(iter != NULL, NULL);
+    
+	assert_return_val(iter != NULL, NULL);
 	
 	Node *tmp = iter->current;
     
