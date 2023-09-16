@@ -47,7 +47,7 @@ else:
 
 #call doxygen
 try:
-    subprocess.call(["doxygen", "Doxyfile.docs"])
+    subprocess.call(["doxygen", "Doxyfile.doc"])
 except OSError as e:
     if e.errno == errno.ENOENT:
         #program was not found

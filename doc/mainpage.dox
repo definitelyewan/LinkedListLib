@@ -23,7 +23,7 @@ The ByteStream library provides:
  - 100% test coverage
  - License: MIT
 
-@section main-test Some Examples
+@section main-test An Example
 
 Using this library for both linked lists and iterators is simple. see the example below for details.
 
@@ -211,7 +211,7 @@ int main(void){
 }
 @endcode
 
-@section main-install Building, Benchmarking, Testing, and Installation
+@section main-install Building, Testing, and Installation
 The LinkedList repo comes with multiple Python3 scripts aimed at ease of use for verifying tests as well as installation and building. All of these scripts are located in the scripts folder found with your copy of LinkedListLib, but please note these scripts must be run from the root directory of your copy.
 
 Tests can be run on any operating system with support for the cmocka library.

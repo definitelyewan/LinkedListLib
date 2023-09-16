@@ -18,4 +18,6 @@ list into a string, performing a deep copy, deleting data, comparing data, and p
  - 100% test coverage
  - License: MIT
 
+All documentation, tests, builds, and installers can be generated using the provided python3 scripts located in scripts/ . :)
+
 All testing and development was done on Windows 10, Fedora 38, and Debian 12
