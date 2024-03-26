@@ -365,7 +365,7 @@ List *listDeepCopy(List *listToCopy){
 	assert_return_val(listToCopy != NULL, NULL);
 
 	List *l = listCreate(listToCopy->printData, listToCopy->deleteData, listToCopy->compareData, listToCopy->copyData);
-	l->length = listToCopy->length;
+
 
 	ListIter iter = listCreateIterator(listToCopy);
 

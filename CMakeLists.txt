@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22.1)
-project(LinkList VERSION 1.0.0.0)
+project(LinkList VERSION 1.0.1.0)
 
 set(LINKEDLIST_SRC
   "${CMAKE_CURRENT_SOURCE_DIR}/src/LinkedList.c"
